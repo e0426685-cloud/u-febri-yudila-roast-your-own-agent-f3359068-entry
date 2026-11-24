@@ -12,11 +12,23 @@ ROAST = (
 )
 
 
+def validate(line):
+    """Check the roast is a single non-empty line of 1-200 characters."""
+    if not isinstance(line, str) or not line:
+        raise ValueError("roast must be a non-empty string")
+    if "\n" in line or "\r" in line:
+        raise ValueError("roast must be a single line")
+    if len(line) > 200:
+        raise ValueError("roast must be at most 200 characters")
+    return line
+
+
 def main():
+    roast = validate(ROAST)
     os.makedirs("/output", exist_ok=True)
     path = "/output/entry.txt"
     with open(path, "w", encoding="utf-8") as f:
-        f.write(ROAST)
+        f.write(roast)
     os.chmod(path, 0o644)
 
 
